@@ -1,17 +1,13 @@
 import prettier from "prettier";
 import { transform } from "../transform";
-import { typeScriptTransformer } from "../typescript-transformer";
+import { typescript } from "../transformers/typescript";
 import { testHelpers } from "./test-helpers";
 
 for (const [key, value] of testHelpers.examples()) {
   const { parseOutput, tsOutput } = value;
 
-  if (!tsOutput) {
-    continue;
-  }
-
   test(key, async () => {
-    const result = await transform(parseOutput as any, typeScriptTransformer);
+    const result = await transform(parseOutput as any, typescript);
 
     const resultNoNewlines = result.replace(/\n/g, "");
     const tsOutputNoNewLines = tsOutput.replace(/\n/g, "");

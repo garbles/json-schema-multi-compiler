@@ -65,3 +65,17 @@ export const parseOutput: ASTNode = {
     },
   },
 };
+
+export const tsOutput = `
+  import * as Runtime from "json-schema-multi-compiler/build/runtimes/typescript";
+
+  type OneOf0 = {
+    name?: string;
+  };
+
+  type OneOf1 = {
+    age?: number;
+  };
+
+  export type OneOf = Runtime.XOR<OneOf0, OneOf1>;
+`;

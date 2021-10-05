@@ -1,6 +1,6 @@
-import { Transformer } from "./types";
+import { Transformer } from "../types";
 
-export const typeScriptTransformer: Transformer<string> = {
+export const typescript: Transformer<string> = {
   string() {
     return "string";
   },
@@ -20,6 +20,8 @@ export const typeScriptTransformer: Transformer<string> = {
     const declarations = node.declarations.map((decl) => `type ${decl.name} = ${decl.node()};`).join("\n");
 
     return `
+      import * as Runtime from "json-schema-multi-compiler/build/runtimes/typescript";
+
       ${declarations};
       export type ${node.root.name} = ${node.root.node()};
     `;
@@ -38,12 +40,31 @@ export const typeScriptTransformer: Transformer<string> = {
     return `{ ${properties} }`;
   },
   or(node) {
+    if (node.items.length === 0) {
+      return "unknown";
+    }
+
     return node.items.map((item) => item()).join(" | ");
   },
   xor(node) {
-    return node.items.map((item) => item()).join(" | ");
+    if (node.items.length === 0) {
+      return "unknown";
+    }
+
+    const [first, ...items] = node.items;
+    let result = first();
+
+    for (const item of items) {
+      result = `Runtime.XOR<${result}, ${item()}>`;
+    }
+
+    return result;
   },
   and(node) {
+    if (node.items.length === 0) {
+      return "unknown";
+    }
+
     return node.items.map((item) => item()).join(" & ");
   },
   array(node) {

@@ -28,5 +28,7 @@ export const parseOutput: ASTNode = {
 };
 
 export const tsOutput = `
+  import * as Runtime from "json-schema-multi-compiler/build/runtimes/typescript";
+
   export type StringAllOfWithUnknown = string & unknown;
 `;
