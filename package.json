@@ -17,7 +17,8 @@
   "author": "Gabe Scholz <github@gabe.pizza>",
   "homepage": "https://github.com/garbles/json-schema-multi-compiler",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "esbuild src/index.js"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.9",
@@ -30,6 +31,7 @@
     "@types/jest": "^27.0.2",
     "@types/lodash.camelcase": "^4.3.6",
     "@types/lodash.upperfirst": "^4.3.6",
+    "esbuild": "^0.13.4",
     "jest": "^27.2.4",
     "prettier": "^2.4.1",
     "ts-node": "^10.2.1",
