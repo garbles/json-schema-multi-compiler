@@ -77,5 +77,5 @@ export const tsOutput = `
     age?: number;
   };
 
-  export type OneOf = Runtime.XOR<OneOf0, OneOf1>;
+  export type OneOf = Runtime.XOR<[OneOf0, OneOf1]>;
 `;

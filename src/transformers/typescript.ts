@@ -51,14 +51,13 @@ export const typescript: Transformer<string> = {
       return "unknown";
     }
 
-    const [first, ...items] = node.items;
-    let result = first();
-
-    for (const item of items) {
-      result = `Runtime.XOR<${result}, ${item()}>`;
+    if (node.items.length === 1) {
+      return node.items[0]();
     }
 
-    return result;
+    const items = node.items.map((item) => item()).join(", ");
+
+    return `Runtime.XOR<[${items}]>`;
   },
   and(node) {
     if (node.items.length === 0) {
