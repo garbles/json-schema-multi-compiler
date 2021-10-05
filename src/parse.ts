@@ -114,15 +114,17 @@ class ObjectReferenceProcessor {
   }
 }
 
-const bundle = (schema: JSONSchema7, options: Options) => {
+const dereference = (schema: JSONSchema7, options: Options) => {
   const parser = new RefParser();
-  return parser.bundle(options.cwd, schema, {}) as JSONSchema7;
+  return parser.dereference(options.cwd, schema, {}) as JSONSchema7;
 };
 
 const walk = (schema: JSONSchema7, processor: ObjectReferenceProcessor): ASTNode => {
   if (processor.has(schema)) {
     return processor.get(schema)!;
   }
+
+  // TODO when type is an array -> split and make an `or`
 
   // need to call `processor.get` here and if it's already declared then just return it
   // also change the processor definition here to only what is required and have
@@ -316,7 +318,7 @@ const walk = (schema: JSONSchema7, processor: ObjectReferenceProcessor): ASTNode
 
 export const parse = async (schema: JSONSchema7, options: Partial<Options> = {}): Promise<ASTNode> => {
   const fullOptions = { ...defaultOptions, ...options };
-  schema = await bundle(schema, fullOptions);
+  schema = await dereference(schema, fullOptions);
 
   const rootKey = stringToName(schema.title ?? "value");
   const processor = ObjectReferenceProcessor.root(rootKey);

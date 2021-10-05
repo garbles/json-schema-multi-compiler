@@ -14,6 +14,7 @@ type ASTString = {
   minLength: number;
   maxLength: number;
   pattern: string;
+  // format: string; // TODO
 };
 
 type ASTNumber = {

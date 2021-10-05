@@ -12,9 +12,13 @@ const name = {
 export const input = {
   title: "Object with referenced properties",
   type: "object",
+  $defs: {
+    name,
+  },
   properties: {
     firstName: name,
     lastName: name,
+    middleName: { $ref: "#/$defs/name" },
   },
   required: ["lastName"],
 };
@@ -57,6 +61,7 @@ export const parseOutput: ASTNode = {
         properties: [
           { key: "firstName", value: { type: "reference", name: "Name" }, required: false },
           { key: "lastName", value: { type: "reference", name: "Name" }, required: true },
+          { key: "middleName", value: { type: "reference", name: "Name" }, required: false },
         ],
       },
     },
@@ -79,6 +84,7 @@ export const tsOutput = `
   type ObjectWithReferencedProperties0 = {
     firstName?: Name;
     lastName: Name;
+    middleName?: Name;
   };
 
   export type ObjectWithReferencedProperties = ObjectWithReferencedProperties0;
